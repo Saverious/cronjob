@@ -1,0 +1,41 @@
+{
+  "name": "cronjob",
+  "version": "1.0.0",
+  "description": "A scheduler to define the time(s) that a task(s) should run",
+  "main": "src/lib/cron.ts",
+  "type": "module",
+  "files": ["src", "README.md"],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Saverious/cronjob.git"
+  },
+  "keywords": [
+    "cron",
+    "cronjob",
+    "schedule",
+    "scheduler"
+  ],
+  "author": "Saverious Ipeni",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Saverious/cronjob/issues"
+  },
+  "homepage": "https://github.com/Saverious/cronjob#readme",
+  "devDependencies": {
+    "@babel/core": "^7.26.9",
+    "@babel/preset-env": "^7.26.9",
+    "@babel/preset-typescript": "^7.26.0",
+    "@jest/globals": "^29.7.0",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
+}
