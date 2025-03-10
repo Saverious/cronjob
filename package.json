@@ -1,7 +1,7 @@
 {
   "name": "cronjob",
   "version": "1.0.0",
-  "description": "A scheduler to define the time(s) that a task(s) should run",
+  "description": "A scheduler with database support to define the time(s) that a task(s) should run",
   "main": "src/lib/cron.ts",
   "type": "module",
   "files": ["src", "README.md"],
