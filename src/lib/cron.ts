@@ -163,29 +163,29 @@ export default class Cron {
     }
 
     // check if jobID exists
-    private jobIDExists (id: string): boolean {
-        return !!this.jobIDToName.get(id);
+    private jobIDExists (jobID: string): boolean {
+        return !!this.jobIDToName.get(jobID);
     }
 
     // remove a job
-    public deleteJob (id: string): void {
+    public deleteJob (jobId: string): void {
         // delete all schedules for this job
-        for(let [scheduleID, jobID] of this.scheduleIDToJob){
-            if(id === jobID)
+        for(let [scheduleID, job_id] of this.scheduleIDToJob){
+            if(jobId === job_id)
                 this.deleteSchedule(scheduleID);
         }
 
-        const jobName = this.jobIDToName.get(id);
+        const jobName = this.jobIDToName.get(jobId);
         if (jobName){
-            this.jobIDToName.delete(id);
+            this.jobIDToName.delete(jobId);
         }
 
-        this.jobs.delete(id);
+        this.jobs.delete(jobId);
     }
 
     // check if a single schedule exists
-    public scheduleIDExists (id: string): boolean {
-        return !!this.schedules.get(id);
+    public scheduleIDExists (scheduleID: string): boolean {
+        return !!this.schedules.get(scheduleID);
     }
 
     // check if there is any schedule present in map
