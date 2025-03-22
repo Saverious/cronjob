@@ -8,17 +8,18 @@ export default class Cron {
     private jobIDToName: Map<string, string>
     private schedules: Map<string, string>
     private scheduleIDToJob: Map<string, string>
-    private missedSchedules: Map<string, string>
     private scheduleIntervals: Map<string, any>
+    private executeMissedSchedules: boolean
 
-    constructor () {
+    constructor ({executeMissedSchedules = false} = {}) {
         this.jobs = new Map();              // jobName: job()
         this.jobIDToName = new Map()        // jobID: jobName
         this.schedules = new Map();         // scheduleId: time
         this.scheduleIDToJob = new Map()    // scheduleID: jobID
-        this.missedSchedules = new Map();   // scheduleId: jobID
         this.scheduleIntervals = new Map(); // scheduleID: interval
+        this.executeMissedSchedules = executeMissedSchedules;
     }
+
 
     // initialize job
     public addJob (__jobName__: string, func: Function): string {
@@ -39,6 +40,7 @@ export default class Cron {
         return jobID;
     }
 
+
     // schedule the initialized job
     public addSchedule (jobID: string, time: Time): string {
         if(!this.jobIDExists(jobID))
@@ -51,18 +53,13 @@ export default class Cron {
             throw new Error('scheduledTime is undefined');
 
         if(this.isMissedSchedule(scheduledTime)){
-            this.setMissedSchedule(scheduleID, jobID);
+            this.handleMissedSchedule(scheduleID);
         }else{
             this.schedules.set(scheduleID, scheduledTime);
             this.scheduleIDToJob.set(scheduleID, jobID);
         }
 
         return scheduleID;
-    }
-
-    // set missed schedule
-    private setMissedSchedule (scheduleID: string, jobID: string): void {
-        this.missedSchedules.set(scheduleID, jobID);
     }
 
     // run scheduled job
@@ -82,6 +79,7 @@ export default class Cron {
         job();
         this.deleteSchedule(scheduleID);
     }
+    
 
     // wait for scheduled time to reach then execute scheduled job
     public runScheduler (): void {
@@ -92,14 +90,7 @@ export default class Cron {
         for(let [scheduleID, scheduledTime] of this.schedules){
             const interval = setInterval(() => {
                 if(this.isMissedSchedule(scheduledTime)){
-                    const jobID = this.scheduleIDToJob.get(scheduleID);
-                    if(jobID === undefined){
-                        this.deleteSchedule(scheduleID);
-                    }else{
-                        // flag schedule as missed
-                        this.setMissedSchedule(scheduleID, jobID);
-                        this.stopSchedule(scheduleID);
-                    }
+                    this.handleMissedSchedule(scheduleID);
                 }else{
                     if(this.shouldExecute(scheduledTime)){
                         // run job
@@ -113,6 +104,7 @@ export default class Cron {
 
     }
 
+
     // stop a single shedule
     public stopSchedule (scheduleID: string): void {
         const interval = this.scheduleIntervals.get(scheduleID);
@@ -123,6 +115,7 @@ export default class Cron {
             this.scheduleIntervals.delete(scheduleID);
         }
     }
+
 
     // check for skipped schedules
     private isMissedSchedule (scheduledTime: string): boolean {
@@ -138,6 +131,18 @@ export default class Cron {
 
         return false;
     }
+
+
+    // handle missed schedule
+    private handleMissedSchedule (scheduleID: string): void {
+        if(!this.executeMissedSchedules){
+            this.deleteSchedule(scheduleID);
+            return;
+        }
+
+        this.runJob(scheduleID);
+    }
+
 
     // check if scheduled time has reached (thus job should execute)
     private shouldExecute (scheduledTime: string): boolean {
@@ -157,15 +162,18 @@ export default class Cron {
         return false;
     }
 
+
     // check if a single job exists
     private jobExists (jobName: string): boolean {
         return !!this.jobs.get(jobName);
     }
 
+
     // check if jobID exists
     private jobIDExists (jobID: string): boolean {
         return !!this.jobIDToName.get(jobID);
     }
+
 
     // remove a job
     public deleteJob (jobId: string): void {
@@ -183,20 +191,18 @@ export default class Cron {
         this.jobs.delete(jobId);
     }
 
+
     // check if a single schedule exists
     public scheduleIDExists (scheduleID: string): boolean {
         return !!this.schedules.get(scheduleID);
     }
+
 
     // check if there is any schedule present in map
     public schedulesExist (): boolean {
         return this.schedules.size > 0;
     }
 
-    // check if there are any unexecuted jobs
-    public missedSchedulesExist (): boolean {
-        return this.missedSchedules.size === 0;
-    }
 
     // remove a single schedule for a job (not the job)
     public deleteSchedule (scheduleID: string): void {
