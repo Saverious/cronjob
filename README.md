@@ -1,5 +1,5 @@
 # cronjob
-A job scheduler to define times when a task or tasks should execute
+A job scheduler to define time when a task or tasks should execute
 
 # Installation
 ```text
