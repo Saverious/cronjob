@@ -16,7 +16,7 @@ function main () {
         minute: now.getMinutes()
     }
 
-    const cron = new Cron()
+    const cron = new Cron({executeMissedSchedules: false})
     const jobID = cron.addJob('add', () => add(3, 4))
     cron.addSchedule(jobID, time)
     cron.runScheduler()
