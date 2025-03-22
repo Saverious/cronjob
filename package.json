@@ -1,5 +1,5 @@
 {
-  "name": "cronjob",
+  "name": "@saverious/cronjob",
   "version": "1.0.0",
   "description": "A scheduler to define the time when a task or tasks should execute",
   "main": "src/lib/cron.ts",

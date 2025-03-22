@@ -1,4 +1,4 @@
-# cronjob
+# @saverious/cronjob
 A job scheduler to define time when a task or tasks should execute
 
 # Installation
@@ -12,7 +12,7 @@ A job scheduler to define time when a task or tasks should execute
      * cron.addJob      - returns jobID as string
      * cron.addSchedule - returns scheduleID as string
     */
-    import Cron from '../src/lib/cron.ts'; // or use: import Cron from 'cronjob'
+    import Cron from '../src/lib/cron.ts'; // or use: import Cron from '@saverious/cronjob'
 
     function add(a, b) {
         console.log(`a: ${a}\nb: ${b}`);
