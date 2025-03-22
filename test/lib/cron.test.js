@@ -1,5 +1,8 @@
 import { describe, test, expect, jest } from '@jest/globals';
-import { pastTime1, pastTime2, futureTime } from './time.js';
+import {
+    pastYear, pastMonth, pastDay,
+    pastHour, pastMinute, futureTime
+} from './time.js';
 import { currDateTime } from '../../src/utils/time.ts';
 import Cron from '../../src/lib/cron.ts';
 
@@ -78,18 +81,29 @@ describe('*** addSchedule ***', () => {
     });
 
     test('year cannot be a past year', () => {
-        expect(() => cron.addSchedule(jobID, pastTime2)).toThrow();
+        expect(() => cron.addSchedule(jobID, pastYear)).toThrow();
+    });
+    
+    test('month cannot be a past month', () => {
+        expect(() => cron.addSchedule(jobID, pastMonth)).toThrow();
+    });
+
+    test('day cannot be a past day', () => {
+        expect(() => cron.addSchedule(jobID, pastDay)).toThrow();
+    });
+
+    test('hour cannot be a past hour', () => {
+        expect(() => cron.addSchedule(jobID, pastHour)).toThrow();
+    });
+
+    test('minute cannot be a past minute', () => {
+        expect(() => cron.addSchedule(jobID, pastMinute)).toThrow();
     });
 
     test('should save schedule metadata', () => {
         let schID = cron.addSchedule(jobID, futureTime);
         expect(cron.schedules.has(schID)).toBeTruthy();
         expect(cron.scheduleIDToJob.has(schID)).toBeTruthy();
-    });
-
-    test('should flag schedule as missed', () => {
-        let schID = cron.addSchedule(jobID, pastTime1);
-        expect(cron.missedSchedules.has(schID)).toBeTruthy();
     });
 
     test('should handle schedule interval correctly', () => {
@@ -136,11 +150,3 @@ describe('*** runJob ***', () => {
         jest.restoreAllMocks();
     });
 });
-
-/**
- *  8. cron.jobExists()
-*/
-
-/**
- *  9. cron.jobIDExists()
-*/

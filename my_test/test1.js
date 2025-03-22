@@ -7,12 +7,13 @@ function add(a, b) {
 
 function main () {
     const now = new Date()
+    
     const time = {
         year: now.getFullYear(),
         month: now.getMonth() + 1,
         day: now.getDate(),
         hour: now.getHours(),
-        minute: now.getMinutes() + 1
+        minute: now.getMinutes()
     }
 
     const cron = new Cron()
