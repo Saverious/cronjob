@@ -64,5 +64,6 @@ export function currDateTime (): Time {
 // current date and time: string
 export function strDateTime (): string {
     const time = currDateTime();
-    return formattedTime(time);
+    const timeFmt = formattedTime(time);
+    return timeFmt
 }

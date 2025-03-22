@@ -52,13 +52,8 @@ export default class Cron {
         if(scheduledTime === undefined)
             throw new Error('scheduledTime is undefined');
 
-        if(this.isMissedSchedule(scheduledTime)){
-            this.handleMissedSchedule(scheduleID);
-        }else{
-            this.schedules.set(scheduleID, scheduledTime);
-            this.scheduleIDToJob.set(scheduleID, jobID);
-        }
-
+        this.schedules.set(scheduleID, scheduledTime);
+        this.scheduleIDToJob.set(scheduleID, jobID);
         return scheduleID;
     }
 
@@ -109,7 +104,7 @@ export default class Cron {
     public stopSchedule (scheduleID: string): void {
         const interval = this.scheduleIntervals.get(scheduleID);
         if(interval === undefined){
-            throw new Error(`cannot clear interval for schedule ${scheduleID}. Missing interval ID`);
+            console.warn(`cannot clear interval for schedule ${scheduleID}. Missing interval ID`);
         }else{
             clearInterval(interval);
             this.scheduleIntervals.delete(scheduleID);
@@ -125,11 +120,7 @@ export default class Cron {
         const now = new Date(curYY, curMM - 1, curDD, curHR, curMIN).getTime();
         const set = new Date(setYY, setMM - 1, setDD, setHT, setMIN).getTime();
 
-        if(now > set){
-            return true;
-        }
-
-        return false;
+        return now > set;
     }
 
 
@@ -149,17 +140,13 @@ export default class Cron {
         const [curYY, curMM, curDD, curHR, curMIN] = strDateTime().split(':').map(Number);
         const [setYY, setMM, setDD, setHR, setMIN] = scheduledTime.split(':').map(Number);
 
-        if(
+        return (
             curYY === setYY && 
             curMM === setMM &&
             curDD === setDD &&
             curHR === setHR &&
             curMIN === setMIN
-        ){
-            return true;
-        }
-
-        return false;
+        );
     }
 
 
@@ -189,12 +176,6 @@ export default class Cron {
         }
 
         this.jobs.delete(jobId);
-    }
-
-
-    // check if a single schedule exists
-    public scheduleIDExists (scheduleID: string): boolean {
-        return !!this.schedules.get(scheduleID);
     }
 
 
