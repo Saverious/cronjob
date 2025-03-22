@@ -1,4 +1,4 @@
-import { describe, test, expect, jest } from '@jest/globals';
+import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
 import {
     pastYear, pastMonth, pastDay,
     pastHour, pastMinute, futureTime
@@ -7,12 +7,12 @@ import { currDateTime } from '../../src/utils/time.ts';
 import Cron from '../../src/lib/cron.ts';
 
 // Mock getUUID()
-jest.mock('../../src/utils/uuid.ts', () => ({
+vi.mock('../../src/utils/uuid.ts', () => ({
     __esModule: true,
-    default: jest.fn(() => '12345')
+    default: vi.fn(() => '12345')
 }));
 
-jest.useFakeTimers();
+vi.useFakeTimers();
 
 /**
  *  1. cron.addJob()
@@ -23,11 +23,11 @@ describe('*** addJob ***', () => {
 
     beforeEach (() => {
         cron = new Cron();
-        jobID = cron.addJob('myJob1', jest.fn());
+        jobID = cron.addJob('myJob1', vi.fn());
     });
 
     test('should add job successfully', () => {
-        expect(() => cron.addJob('myJob2', jest.fn())).not.toThrow();
+        expect(() => cron.addJob('myJob2', vi.fn())).not.toThrow();
     });
 
     test('should save job metadata', () => {
@@ -36,11 +36,11 @@ describe('*** addJob ***', () => {
     });
 
     test('should not allow integer as jobName', () => {
-        expect(() => cron.addJob(4647, jest.fn())).toThrowError();
+        expect(() => cron.addJob(4647, vi.fn())).toThrowError();
     });
 
     test('should not allow undefined jobName', () => {
-        expect(() => cron.addJob(undefined, jest.fn())).toThrowError();
+        expect(() => cron.addJob(undefined, vi.fn())).toThrowError();
     });
 
     test('should not allow invalid job', () => {
@@ -60,7 +60,7 @@ describe('*** addJob ***', () => {
     });
 
     test('should not allow duplicate job name', () => {
-        expect(() => cron.addJob('myJob1', jest.fn())).toThrowError();
+        expect(() => cron.addJob('myJob1', vi.fn())).toThrowError();
     });
 });
 
@@ -73,7 +73,7 @@ describe('*** addSchedule ***', () => {
 
     beforeEach (() => {
         cron = new Cron();
-        jobID = cron.addJob('myjob1', jest.fn());
+        jobID = cron.addJob('myjob1', vi.fn());
     });
 
     test('should run successfully', () => {
@@ -123,7 +123,7 @@ describe('*** runJob ***', () => {
 
     beforeEach(() => {
         cron = new Cron();
-        mockJob = jest.fn();
+        mockJob = vi.fn();
     });
 
     test('should execute a scheduled job at the correct time', () => {
@@ -132,12 +132,12 @@ describe('*** runJob ***', () => {
         const schID = cron.addSchedule(jobID, time);
 
         // simulate that the execution time has arrived
-        jest.spyOn(cron, 'shouldExecute').mockReturnValue(true);
+        vi.spyOn(cron, 'shouldExecute').mockReturnValue(true);
 
         cron.runScheduler();
 
         // Fast forward time to trigger the interval
-        jest.advanceTimersByTime(5000);
+        vi.advanceTimersByTime(5000);
 
         expect(mockJob).toHaveBeenCalledTimes(1);
         expect(cron.scheduleIDToJob.has(schID)).toBeFalsy();
@@ -146,7 +146,7 @@ describe('*** runJob ***', () => {
     });
 
     afterEach(() => {
-        jest.clearAllTimers();
-        jest.restoreAllMocks();
+        vi.clearAllTimers();
+        vi.restoreAllMocks();
     });
 });

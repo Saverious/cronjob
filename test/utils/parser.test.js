@@ -1,4 +1,4 @@
-import { describe, test, expect } from '@jest/globals';
+import { describe, test, expect } from 'vitest';
 import { parseJobName, parseJob } from '../../src/utils/parser.ts';
 
 
