@@ -134,7 +134,8 @@ describe('*** runJob ***', () => {
         // simulate that the execution time has arrived
         vi.spyOn(cron, 'shouldExecute').mockReturnValue(true);
 
-        cron.runScheduler();
+        //cron.runScheduler();
+        cron.runJob(schID); // Call runJob directly for test instead of relying on timers
 
         // Fast forward time to trigger the interval
         vi.advanceTimersByTime(5000);
