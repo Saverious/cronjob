@@ -3,7 +3,7 @@ A job scheduler to define time when a task or tasks should execute
 
 # Installation
 ```text
-   npm install cronjob
+   npm i @saverious/cronjob
 ```
 
 # Usage
