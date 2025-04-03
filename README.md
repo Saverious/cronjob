@@ -99,7 +99,7 @@ cron.addSchedule(job1, time3);
 
 ## cron.runScheduler()
 This method starts the scheduler. It listens for each schedule and executes each task when its 
-respective scheduled time id reached.
+respective scheduled time is reached.
 
 ```js
 cron.runScheduler();
