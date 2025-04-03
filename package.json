@@ -1,6 +1,6 @@
 {
   "name": "@saverious/cronjob",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "A scheduler to define the time when a task or tasks should execute",
   "main": "dist/cron.cjs",
   "type": "module",
