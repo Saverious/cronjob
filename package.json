@@ -3,25 +3,25 @@
   "version": "2.0.1",
   "description": "A scheduler to define the time when a task or tasks should execute",
   "main": "dist/cron.cjs",
-  "type": "module",
   "module": "dist/cron.mjs",
   "types": "dist/cron.d.ts",
   "exports": {
     "require": "./dist/cron.cjs",
-    "import": "./dist/cron.mjs"
+    "import": "./dist/cron.js"
   },
+  "type": "module",
   "files": [
     "dist",
     "README.md"
   ],
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
   "scripts": {
     "build": "tsup",
     "prepare": "npm run build",
     "test": "vitest"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "repository": {
     "type": "git",

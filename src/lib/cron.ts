@@ -3,7 +3,7 @@ import getUUID from '../utils/uuid.ts';
 import { strDateTime } from '../utils/time.ts';
 import { parseJobName, parseJob, parseTime } from '../utils/parser.ts';
 
-export default class Cron {
+class Cron {
     private jobs: Map<string, Function>
     private jobIDToName: Map<string, string>
     private schedules: Map<string, string>
@@ -192,3 +192,9 @@ export default class Cron {
         this.schedules.delete(scheduleID); // delete scheduleID
     }
 }
+
+// export for esm
+export { Cron };
+
+// export for cjs
+export default Cron;
