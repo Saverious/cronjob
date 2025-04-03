@@ -2,10 +2,16 @@
   "name": "@saverious/cronjob",
   "version": "1.0.2",
   "description": "A scheduler to define the time when a task or tasks should execute",
-  "main": "src/lib/cron.ts",
+  "main": "dist/cron.cjs",
   "type": "module",
+  "module": "dist/cron.mjs",
+  "types": "dist/cron.d.ts",
+  "exports": {
+    "require": "./dist/cron.cjs",
+    "import": "./dist/cron.mjs"
+  },
   "files": [
-    "src",
+    "dist",
     "README.md"
   ],
   "publishConfig": {
@@ -13,6 +19,8 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
+    "build": "tsup",
+    "prepare": "npm run build",
     "test": "vitest"
   },
   "repository": {
@@ -33,6 +41,7 @@
   "homepage": "https://github.com/Saverious/cronjob#readme",
   "devDependencies": {
     "ts-node": "^10.9.2",
+    "tsup": "^8.4.0",
     "typescript": "^5.7.3",
     "vitest": "^3.0.9"
   }
